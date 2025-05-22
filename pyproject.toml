@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "bas_set_cpu_affinity"
+version = "0.1.0"
+description = "A tool for managing CPU affinity for processes, allowing specific core assignments for main and worker processes."
+authors = ["sergerdn <64213648+sergerdn@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "bas_set_cpu_affinity"}]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: System :: Systems Administration",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+psutil = "7.0.0"
+pyinstaller = "6.13.0"
+click = "8.2.1"
+
+[tool.poetry.scripts]
+set-cpu-affinity = "bas_set_cpu_affinity.cli:main"
+
+[tool.poetry.group.dev.dependencies]
+black = "25.1.0"
+mypy = "1.15.0"
+flake8 = "7.2.0"
+pylint = "3.3.7"
+pylint-pydantic = "0.3.5"
+docformatter = "1.7.7"
+docconvert = "2.2.0"
+types-psutil = "5.9.5.20240106"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-docstring",
+    "invalid-name",
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "too-many-locals",
+    "too-many-statements",
+    "too-many-branches",
+    "too-many-return-statements",
+    "too-many-public-methods",
+    "too-many-lines",
+    "too-many-ancestors",
+    "duplicate-code",
+]
+
+[tool.pylint.format]
+max-line-length = 120
+
+[tool.docformatter]
+recursive = true
+wrap-summaries = 120
+wrap-descriptions = 120
+blank = true
