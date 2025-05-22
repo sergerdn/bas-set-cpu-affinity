@@ -11,7 +11,13 @@ import time
 import click
 import psutil
 
-from .core import move_processes_from_main_cores, parse_core_string, set_affinities, validate_cores
+from .core import (
+    check_single_instance,
+    move_processes_from_main_cores,
+    parse_core_string,
+    set_affinities,
+    validate_cores,
+)
 
 # Configure logging only if it hasn't been configured already
 # This allows the entry point script to set its own configuration
@@ -140,6 +146,9 @@ def manage_affinity(main_cores, interval, main_name, workers, verbose):
 
 def main():
     """Entry point for the CLI."""
+    # Check if another instance is already running
+    mutex = check_single_instance()
+
     # pylint: disable=no-value-for-parameter
     manage_affinity()
 

@@ -47,6 +47,7 @@ ensures smooth operation even on servers with limited CPU resources.
 - Assigning worker processes to different cores to prevent resource contention
 - Optimizing multiprocess applications by controlling CPU resource allocation
 - Automatically moving existing processes from main cores to worker cores at startup to free up resources
+- Preventing multiple instances from running simultaneously to avoid conflicts
 - Especially helpful for servers without `GPUs`, where all processing loads (including browser processes that would
   normally use `GPU`) fall on the `CPU` and cores can easily become overloaded
 
@@ -99,9 +100,15 @@ poetry install
 
 When you start the tool, it is automatically:
 
-1. Identifies the available CPU cores and assigns them to main and worker processes
-2. Moves existing processes from main cores to worker cores to free up resources
-3. Begins monitoring and managing CPU affinity for all matching processes
+1. Checks if another instance is already running and prevents multiple instances
+2. Identifies the available CPU cores and assigns them to main and worker processes
+3. Moves existing processes from main cores to worker cores to free up resources
+4. Begins monitoring and managing CPU affinity for all matching processes
+
+If you attempt to start the tool when another instance is already running, you'll see an error message in a dialog box
+and the new
+instance will exit. This ensures that error messages are visible even when launching the application by double-clicking
+the executable file.
 
 ### Command Line
 

@@ -5,10 +5,56 @@ This module provides the core functions for parsing CPU core specifications and 
 """
 
 import logging
+import sys
 
 import psutil
+import win32api
+import win32event
+import win32ui
+import winerror
 
 logger = logging.getLogger("[cpu_affinity]")
+
+
+def check_single_instance():
+    """Check if another instance of the application is already running.
+
+    Uses a mutex to determine if another instance is already running. If another instance is found, displays an error
+    message and exits.
+
+    """
+    mutex_name = "Global\\BAS_CPU_Affinity_Manager_Mutex"
+
+    try:
+        # Attempt to create a mutex
+        mutex = win32event.CreateMutex(None, False, mutex_name)
+        # Check if the mutex already exists
+        if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
+            error_message = "Another instance of the application is already running.\nPlease close the existing instance before starting a new one."
+            logger.error(error_message.replace("\n", " "))
+
+            # Display a message box that will be visible when double-clicking the exe
+            try:
+                win32ui.MessageBox(error_message, "BAS CPU Affinity Manager - Error", 0)
+            except Exception as msg_err:
+                logger.error("Failed to display message box: %s", str(msg_err))
+
+            sys.exit(1)
+
+        logger.debug("No other instances found, continuing execution.")
+        return mutex
+    except Exception as e:
+        error_message = f"Error checking for other instances: {str(e)}"
+        logger.error(error_message)
+
+        # Display a message box for the error
+        try:
+            win32ui.MessageBox(error_message, "BAS CPU Affinity Manager - Error", 0)
+        except Exception as msg_err:
+            logger.error("Failed to display message box: %s", str(msg_err))
+
+        # Continue execution even if mutex check fails
+        return None
 
 
 def parse_core_string(core_str):
