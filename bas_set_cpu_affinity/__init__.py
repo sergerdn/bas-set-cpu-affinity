@@ -4,6 +4,6 @@ A tool for managing CPU affinity for processes, allowing specific core assignmen
 
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from .core import parse_core_string, set_affinities  # noqa: F401

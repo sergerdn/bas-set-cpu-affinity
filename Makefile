@@ -1,5 +1,5 @@
 # Define all targets as phony (not representing files)
-.PHONY: build run install clean lint lint_fix prepare_release
+.PHONY: build run install clean lint lint_fix prepare_release bump_version bump_version_major bump_version_minor bump_version_patch
 # Set the default goal when running make without arguments
 .DEFAULT_GOAL := build
 
@@ -43,3 +43,19 @@ prepare_release:
 	make clean
 	make lint
 	make build_executable
+
+# Bump version automatically based on commit messages
+bump_version:
+	poetry run cz bump --changelog
+
+# Bump major version (x.0.0)
+bump_version_major:
+	poetry run cz bump --increment MAJOR
+
+# Bump minor version (0.x.0)
+bump_version_minor:
+	poetry run cz bump --increment MINOR
+
+# Bump patch version (0.0.x)
+bump_version_patch:
+	poetry run cz bump --increment PATCH

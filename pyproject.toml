@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bas_set_cpu_affinity"
-version = "0.1.0"
+version = "0.2.0"
 description = "A tool for managing CPU affinity for processes, allowing specific core assignments for main and worker processes."
 authors = ["sergerdn <64213648+sergerdn@users.noreply.github.com>"]
 readme = "README.md"
@@ -31,6 +31,7 @@ pylint-pydantic = "0.3.5"
 docformatter = "1.7.7"
 docconvert = "2.2.0"
 types-psutil = "5.9.5.20240106"
+commitizen = "3.20.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -77,3 +78,15 @@ recursive = true
 wrap-summaries = 120
 wrap-descriptions = 120
 blank = true
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.2.0"
+tag_format = "v$version"
+version_files = [
+    "pyproject.toml:version",
+    "bas_set_cpu_affinity/__init__.py:__version__"
+]
+update_changelog_on_bump = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true

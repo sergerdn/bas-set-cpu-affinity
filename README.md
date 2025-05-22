@@ -30,7 +30,7 @@ FastExecuteScript.exe (Main Process)
 ├── Worker.exe (Worker Process)
 │   └── worker.exe (Chromium Browser)
 └── Worker.exe (Worker Process)
-    └── worke.exe (Chromium Browser)
+    └── worker.exe (Chromium Browser)
 ```
 
 By assigning the main BAS process to specific cores and workers to different cores, this tool prevents these issues and
@@ -111,7 +111,9 @@ This ensures users can download and run the tool without needing to install Pyth
 
 ## Development
 
-### Setup
+For detailed information about development, building, and releasing, please see the [Development Guide](DEVELOPMENT.md).
+
+### Quick Start
 
 ```bash
 # Clone the repository
@@ -122,19 +124,8 @@ cd bas-set-cpu-affinity
 poetry install
 
 # Run the tool
-poetry run set-cpu-affinity 0-1-2-3-4 -v
+poetry run set-cpu-affinity -v
 ```
-
-### Makefile Commands
-
-- `make build`: Build the package
-- `make install`: Install the package
-- `make run`: Run the tool with default parameters
-- `make build_executable`: Build a standalone executable
-- `make clean`: Clean build artifacts
-- `make lint`: Check code for style issues without fixing them
-- `make lint_fix`: Automatically fix code style issues
-- `make prepare_release`: Prepare files for GitHub release (cleans, lints, and builds executable)
 
 ## License
 
