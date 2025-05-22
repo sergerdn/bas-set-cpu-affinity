@@ -10,7 +10,9 @@ A tool for managing CPU affinity for processes, allowing specific core assignmen
 
 This tool was specifically created to solve performance issues with BAS (Browser Automation Studio):
 
-- The BAS main process (`FastExecuteScript.exe`) runs on a single core
+- The BAS main process runs on a single core
+    - For compiled programs, the main process is named `FastExecuteScript.exe`
+    - For non-compiled programs, the main process is named `BrowserAutomationStudio.exe`
 - BAS main process spawns multiple worker (`Worker.exe`) processes that:
     - Communicate with the main process
     - Spawn Chromium browser processes named `worker.exe` (lowercase)
@@ -24,7 +26,7 @@ This tool was specifically created to solve performance issues with BAS (Browser
 #### BAS Process Architecture
 
 ```
-FastExecuteScript.exe (Main Process)
+Main Process (FastExecuteScript.exe or BrowserAutomationStudio.exe)
 ├── Worker.exe (Worker Process)
 │   └── worker.exe (Chromium Browser)
 └── Worker.exe (Worker Process)
@@ -53,9 +55,28 @@ The tool continuously monitors processes and ensures they maintain the specified
 3. Run the executable (`set_cpu_affinity.exe`) by double-clicking it
 
 ```txt
-INFO:[cpu_affinity]:System CPU cores: 16
-INFO:[cpu_affinity]:Main process 'FastExecuteScript.exe' should assign to cores: [0, 1, 2, 3]
-INFO:[cpu_affinity]:Worker processes ['worker.exe'] should assign to cores: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Starting CPU affinity manager
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Python version: 3.12.3 (tags/v3.12.3:f6650f9, Apr  9 2024, 14:05:25) [MSC v.1938 64 bit (AMD64)]
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - System platform: win32
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - CPU count: 16
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Main process names: ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Worker process names: ['worker.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Main cores: [0, 1, 2, 3]
+2025-05-22 08:23:50 - [cpu_affinity] - INFO - System CPU cores: 16
+2025-05-22 08:23:50 - [cpu_affinity] - INFO - Main processes ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe'] should assign to cores: [0, 1, 2, 3]
+2025-05-22 08:23:50 - [cpu_affinity] - INFO - Worker processes ['worker.exe'] should assign to cores: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Checking processes...
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Looking for main processes: ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Looking for worker processes: ['worker.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - WARNING - No main processes found matching: ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - WARNING - No worker processes found matching: ['worker.exe']
+2025-05-22 08:23:50 - [cpu_affinity] - DEBUG - Sleeping for 10.0 seconds...
+2025-05-22 08:24:00 - [cpu_affinity] - DEBUG - Checking processes...
+2025-05-22 08:24:00 - [cpu_affinity] - DEBUG - Looking for main processes: ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe']
+2025-05-22 08:24:00 - [cpu_affinity] - DEBUG - Looking for worker processes: ['worker.exe']
+2025-05-22 08:24:00 - [cpu_affinity] - WARNING - No main processes found matching: ['FastExecuteScript.exe', 'BrowserAutomationStudio.exe']
+2025-05-22 08:24:00 - [cpu_affinity] - WARNING - No worker processes found matching: ['worker.exe']
+2025-05-22 08:24:00 - [cpu_affinity] - DEBUG - Sleeping for 10.0 seconds...
 ```
 
 ### From Source
@@ -93,9 +114,10 @@ set-cpu-affinity -v
     - For systems with more than 8 cores: 25% of cores (rounded down), with a minimum of 2 cores and a maximum of 4
       cores
 - `--interval`: Polling interval in seconds (default: 10)
-- `--main-name`: Main process name (case-insensitive, default: `FastExecuteScript.exe`)
-- `--workers`: Comma-separated worker process names (case-insensitive, default: `Worker.exe`)
-- `-v, --verbose`: Enable verbose logging
+- `--main-name`: Comma-separated main process names (case-insensitive, default:
+  `FastExecuteScript.exe,BrowserAutomationStudio.exe`)
+- `--workers`: Comma-separated worker process names (case-insensitive, default: `worker.exe`)
+- `-v, --verbose`: Enable verbose logging (includes debug information to help identify issues)
 
 ### Building an Executable
 
@@ -106,6 +128,30 @@ make build_executable
 ```
 
 The executable will be created in the `dist` directory.
+
+### Troubleshooting
+
+If you're experiencing issues with the tool not working as expected:
+
+1. Run with verbose logging enabled:
+   ```bash
+   set-cpu-affinity -v
+   ```
+
+2. Check if the correct process names are being monitored:
+    - For compiled BAS programs, the main process is named `FastExecuteScript.exe`
+    - For non-compiled BAS programs, the main process is named `BrowserAutomationStudio.exe`
+    - Worker processes are typically named `worker.exe` (lowercase)
+
+3. Verify that the processes are actually running:
+    - Use Task Manager to check if the processes exist
+    - If the processes have different names, specify them with the `--main-name` and `--workers` options
+
+4. If you still encounter issues, run the tool from the command line to see all debug messages:
+   ```bash
+   cd path\to\extracted\folder
+   set_cpu_affinity.exe -v
+   ```
 
 ### GitHub Releases
 

@@ -5,6 +5,7 @@ This module provides the CLI functionality for the CPU affinity manager.
 """
 
 import logging
+import sys
 import time
 
 import click
@@ -12,8 +13,12 @@ import psutil
 
 from .core import parse_core_string, set_affinities, validate_cores
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging only if it hasn't been configured already
+# This allows the entry point script to set its own configuration
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
 logger = logging.getLogger("[cpu_affinity]")
 
 
@@ -57,8 +62,8 @@ def validate_cores_callback(_ctx, _param, value):
 )
 @click.option(
     "--main-name",
-    default="FastExecuteScript.exe",
-    help="Main process name (case-insensitive)",
+    default="FastExecuteScript.exe,BrowserAutomationStudio.exe",
+    help="Comma-separated main process names (case-insensitive)",
     show_default=True,
 )
 @click.option(
@@ -78,9 +83,19 @@ def manage_affinity(main_cores, interval, main_name, workers, verbose):
     # Configure logging
     logger.setLevel(logging.DEBUG if verbose else logging.INFO)
 
+    logger.debug("Starting CPU affinity manager")
+    logger.debug("Python version: %s", sys.version)
+    logger.debug("System platform: %s", sys.platform)
+
     # Process configuration
+    main_names = [name.strip() for name in main_name.split(",")]
     worker_names = [w.strip() for w in workers.split(",")]
     cpu_count = psutil.cpu_count()
+
+    logger.debug("CPU count: %s", cpu_count)
+    logger.debug("Main process names: %s", main_names)
+    logger.debug("Worker process names: %s", worker_names)
+    logger.debug("Main cores: %s", main_cores)
 
     # Calculate worker cores
     worker_cores = [c for c in range(cpu_count) if c not in main_cores]
@@ -89,13 +104,25 @@ def manage_affinity(main_cores, interval, main_name, workers, verbose):
         raise click.Abort()
 
     logger.info("System CPU cores: %s", cpu_count)
-    logger.info("Main process '%s' should assign to cores: %s", main_name, main_cores)
+    logger.info("Main processes %s should assign to cores: %s", main_names, main_cores)
     logger.info("Worker processes %s should assign to cores: %s", worker_names, worker_cores)
 
     # Main monitoring loop
+    consecutive_failures = 0
     while True:
         try:
-            set_affinities(main_name, worker_names, main_cores, worker_cores)
+            logger.debug("Checking processes...")
+            main_found, worker_found = set_affinities(main_names, worker_names, main_cores, worker_cores)
+
+            if main_found or worker_found:
+                consecutive_failures = 0
+            else:
+                consecutive_failures += 1
+                if consecutive_failures >= 5:
+                    logger.warning("No target processes found for 5 consecutive checks")
+                    consecutive_failures = 0
+
+            logger.debug("Sleeping for %s seconds...", interval)
         except KeyboardInterrupt:
             logger.info("Exiting...")
             break
