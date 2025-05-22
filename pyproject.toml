@@ -32,6 +32,7 @@ pylint-pydantic = "0.3.5"
 docformatter = "1.7.7"
 docconvert = "2.2.0"
 types-psutil = "5.9.5.20240106"
+types-pywin32 = "306.0.0.6"
 commitizen = "3.20.0"
 
 [build-system]
@@ -69,6 +70,8 @@ disable = [
     "too-many-lines",
     "too-many-ancestors",
     "duplicate-code",
+    "broad-exception-caught",
+    "c-extension-no-member",
 ]
 
 [tool.pylint.format]
