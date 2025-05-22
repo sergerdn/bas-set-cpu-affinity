@@ -18,6 +18,7 @@ python = ">=3.10,<3.14"
 psutil = "7.0.0"
 pyinstaller = "6.13.0"
 click = "8.2.1"
+pywin32 = "306"
 
 [tool.poetry.scripts]
 set-cpu-affinity = "bas_set_cpu_affinity.cli:main"
