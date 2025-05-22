@@ -173,3 +173,5 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 /diff.txt
+/prompts.txt
+/git_message.txt
