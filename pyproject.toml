@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "bas_set_cpu_affinity"
-version = "0.3.0"
+version = "0.4.0"
 description = "A tool for managing CPU affinity for processes, allowing specific core assignments for main and worker processes."
 authors = ["sergerdn <64213648+sergerdn@users.noreply.github.com>"]
 readme = "README.md"
@@ -81,7 +81,7 @@ blank = true
 
 [tool.commitizen]
 name = "cz_conventional_commits"
-version = "0.3.0"
+version = "0.4.0"
 tag_format = "v$version"
 version_files = [
     "pyproject.toml:version",
