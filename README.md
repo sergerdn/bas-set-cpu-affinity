@@ -4,8 +4,6 @@ A tool for managing CPU affinity for processes, allowing specific core assignmen
 
 ## Description
 
-BAS CPU Affinity Manager is a Python package that helps you control which CPU cores your processes run on.
-
 **This tool only works on Windows systems** as it relies on Windows-specific CPU affinity functionality.
 
 ### Why This Tool Exists
@@ -16,7 +14,7 @@ This tool was specifically created to solve performance issues with BAS (Browser
 - BAS main process spawns multiple worker (`Worker.exe`) processes that:
     - Communicate with the main process
     - Spawn Chromium browser processes named `worker.exe` (lowercase)
-- On servers with older processors, when the main process and multiple workers run on the same core simultaneously,
+- On servers with old processors, when the main process and multiple workers run on the same core simultaneously,
   various issues can occur:
     - Timing errors in workers
     - Performance degradation
@@ -47,6 +45,20 @@ The tool continuously monitors processes and ensures they maintain the specified
 ## Installation
 
 > **Note:** This tool is designed to work only on Windows operating systems.
+
+### Download Pre-built Release (Recommended)
+
+1. Download the latest release from [GitHub Releases](https://github.com/sergerdn/bas-set-cpu-affinity/releases)
+2. Unpack the ZIP archive
+3. Run the executable (`set_cpu_affinity.exe`) by double-clicking it
+
+```txt
+INFO:[cpu_affinity]:System CPU cores: 16
+INFO:[cpu_affinity]:Main process 'FastExecuteScript.exe' should assign to cores: [0, 1, 2, 3]
+INFO:[cpu_affinity]:Worker processes ['worker.exe'] should assign to cores: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+```
+
+### From Source
 
 ```bash
 git clone git@github.com:sergerdn/bas-set-cpu-affinity.git
