@@ -35,6 +35,11 @@ types-psutil = "5.9.5.20240106"
 types-pywin32 = "310.0.0.20250516"
 commitizen = "3.20.0"
 
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.3.5"
+pytest-cov = "4.1.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
