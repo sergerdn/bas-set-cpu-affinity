@@ -30,7 +30,10 @@ def check_single_instance():
         mutex = win32event.CreateMutex(None, False, mutex_name)
         # Check if the mutex already exists
         if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
-            error_message = "Another instance of the application is already running.\nPlease close the existing instance before starting a new one."
+            error_message = (
+                "Another instance of the application is already running.\n"
+                "Please close the existing instance before starting a new one."
+            )
             logger.error(error_message.replace("\n", " "))
 
             # Display a message box that will be visible when double-clicking the exe

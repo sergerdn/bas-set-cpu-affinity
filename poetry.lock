@@ -1100,6 +1100,17 @@ files = [
 ]
 
 [[package]]
+name = "types-pywin32"
+version = "306.0.0.6"
+description = "Typing stubs for pywin32"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "types-pywin32-306.0.0.6.tar.gz", hash = "sha256:064fe653ccb0dfa55e8ba2ccb2912209de594343e2d5264f1db494c885ebbaf3"},
+    {file = "types_pywin32-306.0.0.6-py3-none-any.whl", hash = "sha256:9b8a974973d7a8fd40ed77e39c559a03b67e71473de17caa07ed9e2f7867c969"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.13.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -1167,4 +1178,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.14"
-content-hash = "6c327875f31115135b102b628b22ce7b684348287b4509716984923ad34eb9de"
+content-hash = "fbb86c9175c46733aa78f94a2ef7efc73e292a731ada00068fa6d715f172f5e9"

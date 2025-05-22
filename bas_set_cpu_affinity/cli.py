@@ -147,7 +147,7 @@ def manage_affinity(main_cores, interval, main_name, workers, verbose):
 def main():
     """Entry point for the CLI."""
     # Check if another instance is already running
-    mutex = check_single_instance()
+    _mutex = check_single_instance()  # noqa: F841
 
     # pylint: disable=no-value-for-parameter
     manage_affinity()
