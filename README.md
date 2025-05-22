@@ -33,7 +33,8 @@ Main Process (FastExecuteScript.exe or BrowserAutomationStudio.exe)
     └── worker.exe (Chromium Browser)
 ```
 
-By assigning the main BAS process to specific cores and workers to different cores, this tool prevents these issues and
+By assigning the main `BAS` process to specific cores and workers to different cores, this tool prevents these issues
+and
 ensures smooth operation even on servers with limited CPU resources.
 
 ### Key Benefits
@@ -41,6 +42,8 @@ ensures smooth operation even on servers with limited CPU resources.
 - Dedicating specific cores to your main application for better performance
 - Assigning worker processes to different cores to prevent resource contention
 - Optimizing multiprocess applications by controlling CPU resource allocation
+- Especially helpful for servers without `GPUs`, where all processing loads (including browser processes that would
+  normally use `GPU`) fall on the `CPU` and cores can easily become overloaded
 
 The tool continuously monitors processes and ensures they maintain the specified CPU affinity settings.
 
