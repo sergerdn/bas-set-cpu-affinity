@@ -22,6 +22,10 @@ This tool was specifically created to solve performance issues with BAS (Browser
     - Performance degradation
     - Task execution failures
     - Resource contention between the main process and workers
+- At startup, the tool automatically moves existing processes from main cores to worker cores:
+    - This frees up resources on the main cores for the BAS main process
+    - Ensures the main process has dedicated CPU resources
+    - Prevents resource contention with other processes
 
 #### BAS Process Architecture
 
@@ -42,6 +46,7 @@ ensures smooth operation even on servers with limited CPU resources.
 - Dedicating specific cores to your main application for better performance
 - Assigning worker processes to different cores to prevent resource contention
 - Optimizing multiprocess applications by controlling CPU resource allocation
+- Automatically moving existing processes from main cores to worker cores at startup to free up resources
 - Especially helpful for servers without `GPUs`, where all processing loads (including browser processes that would
   normally use `GPU`) fall on the `CPU` and cores can easily become overloaded
 
@@ -91,6 +96,12 @@ poetry install
 ```
 
 ## Usage
+
+When you start the tool, it is automatically:
+
+1. Identifies the available CPU cores and assigns them to main and worker processes
+2. Moves existing processes from main cores to worker cores to free up resources
+3. Begins monitoring and managing CPU affinity for all matching processes
 
 ### Command Line
 
@@ -177,6 +188,7 @@ For detailed information about development, building, and releasing, please see 
 ### Planned Features
 
 We maintain a [TODO list](TODO.md) of planned enhancements and features for future development, including:
+
 - Special logic for multiple BAS programs runs on a server with different CPU assignments
 - A list of typical errors that the software can solve
 
