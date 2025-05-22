@@ -11,7 +11,7 @@ import time
 import click
 import psutil
 
-from .core import parse_core_string, set_affinities, validate_cores
+from .core import move_processes_from_main_cores, parse_core_string, set_affinities, validate_cores
 
 # Configure logging only if it hasn't been configured already
 # This allows the entry point script to set its own configuration
@@ -106,6 +106,9 @@ def manage_affinity(main_cores, interval, main_name, workers, verbose):
     logger.info("System CPU cores: %s", cpu_count)
     logger.info("Main processes %s should assign to cores: %s", main_names, main_cores)
     logger.info("Worker processes %s should assign to cores: %s", worker_names, worker_cores)
+
+    # Move all processes from main cores to worker cores at startup, except main processes
+    move_processes_from_main_cores(main_cores, worker_cores, main_names)
 
     # Main monitoring loop
     consecutive_failures = 0
