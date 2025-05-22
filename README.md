@@ -174,6 +174,14 @@ This ensures users can download and run the tool without needing to install Pyth
 
 For detailed information about development, building, and releasing, please see the [Development Guide](DEVELOPMENT.md).
 
+### Planned Features
+
+We maintain a [TODO list](TODO.md) of planned enhancements and features for future development, including:
+- Special logic for multiple BAS programs runs on a server with different CPU assignments
+- A list of typical errors that the software can solve
+
+If you're interested in contributing or want to know what's coming next, check out the [TODO.md](TODO.md) file.
+
 ### Quick Start
 
 ```bash
