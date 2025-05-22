@@ -3,6 +3,25 @@
 This document contains information for developers working on the BAS CPU Affinity Manager project, including build
 instructions, release procedures, and development workflows.
 
+## Requirements
+
+To work on this project, you'll need the following tools installed on your system:
+
+- **Python**: Version 3.10 or newer
+    - Install from [python.org](https://www.python.org/downloads/)
+    - Ensure you add Python to your PATH during installation
+- **Poetry**: For dependency management and packaging
+    - Install using the official installer:
+      `(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -`
+    - Or via pip: `pip install poetry`
+- **Make**: For running development commands
+    - Install using [GnuWin32](http://gnuwin32.sourceforge.net/packages/make.htm)
+    - Or via [Chocolatey](https://chocolatey.org/): `choco install make`
+- **Git**: For version control, install from [git-scm.com](https://git-scm.com/download/win) or
+  via [Chocolatey](https://chocolatey.org/)
+    - Or via Chocolatey: `choco install git`
+- **Windows OS**: This project is designed to work only on Windows systems
+
 ## Development Setup
 
 ```bash
